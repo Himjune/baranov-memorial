@@ -56,6 +56,10 @@ function init (data) {
   const modifier_tags = ['текст', 'видео']
 
   let full_recordset = []
+  const years = {}
+  const sources = {}
+  const tags = {}
+
   let current_recordset = []
   let running_interval
   const loaded_event = new CustomEvent('records.loaded', {
@@ -705,6 +709,101 @@ function init (data) {
     render_btns_by_selected_filters()
   }
 
+  function render_years_filter_menus (labels) {
+    let element = document.getElementById('filters_year')
+    element.innerHTML = `
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item" data-label-key="years" id="unfilter_year" onclick="remove_typed_filters('y')">Сбросить фильтр по годам</button>
+    `
+
+    const filter_years = Object.keys(labels).reverse().map(year =>
+      build_filter_item({
+        year,
+        text: `${year} (${labels[year]})`
+      })
+    )
+
+    element.insertAdjacentHTML('afterbegin', filter_years.join(''))
+    document.getElementById('filter-label-years').innerText = `Годы (${filter_years.length})`
+  }
+
+  function render_sources_filter_menus (labels) {
+    let element = document.getElementById('filters_where')
+    element.innerHTML = `
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item" data-label-key="sources" id="unfilter_where" onclick="remove_typed_filters('w')">Сбросить фильтр по изданиям</button>
+    `
+
+    const sorted_sources = Object.keys(labels).sort(function (a, b) {
+      if (labels[a] > labels[b]) {
+        return -1
+      }
+      if (labels[a] < labels[b]) {
+        return 1
+      }
+
+      return 0
+    })
+
+    const filter_sources = sorted_sources.map(source =>
+      build_filter_item({
+        where: source,
+        text: `${fancy_names[source]} (${labels[source]})`
+      })
+    )
+
+    element.insertAdjacentHTML('afterbegin', filter_sources.join(''))
+    document.getElementById('filter-label-sources').innerText = `Издания (${filter_sources.length})`
+  }
+
+  function render_tags_filter_menus (labels) {
+    let element = document.getElementById('filters_tag')
+    element.innerHTML = `
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item" data-label-key="tags" id="unfilter_tag" onclick="remove_typed_filters('t')">Сбросить фильтр по тегам</button>
+    `
+
+    const sorted_tags = Object.keys(labels).sort(function (a, b) {
+      if (labels[a] > labels[b]) {
+        return -1
+      }
+      if (labels[a] < labels[b]) {
+        return 1
+      }
+      return 0
+    })
+
+    let modifier_search_idx = 0
+    let found_modifiers = 0
+    let mod_sorted_tags = []
+
+    while (modifier_search_idx >= 0) {
+      modifier_search_idx = sorted_tags.findIndex((tag) => {
+        return modifier_tags.includes(tag)
+      })
+
+      if (modifier_search_idx >= 0) {
+        found_modifiers++
+
+        mod_sorted_tags.push(sorted_tags[modifier_search_idx])
+        sorted_tags.splice(modifier_search_idx, 1)
+      }
+    }
+
+    mod_sorted_tags = mod_sorted_tags.concat(sorted_tags)
+
+    const filter_tags = mod_sorted_tags.map(tag =>
+      build_filter_item({
+        tag,
+        text: `${tag} (${labels[tag]})`
+      })
+    )
+
+    filter_tags.splice(found_modifiers, 0, '<div class="dropdown-divider"></div>') // there are two main tag categories to be separated
+    element.insertAdjacentHTML('afterbegin', filter_tags.join(''))
+    document.getElementById('filter-label-tags').innerText = `Тэги (${filter_tags.length - 1})`
+  }
+
   document.addEventListener('records.loaded', function () {
     /**
      * Необходимо отсортировать полный recordset
@@ -764,10 +863,6 @@ function init (data) {
       draw_with_filter()
     }
 
-    const years = {}
-    const sources = {}
-    const tags = {}
-
     for (const i in full_recordset) {
       if (Object.prototype.hasOwnProperty.call(full_recordset, i)) {
         const record = full_recordset[i]
@@ -791,74 +886,9 @@ function init (data) {
       }
     }
 
-    const filter_years = Object.keys(years).reverse().map(year =>
-      build_filter_item({
-        year,
-        text: `${year} (${years[year]})`
-      })
-    )
-    document.getElementById('filters_year').insertAdjacentHTML('afterbegin', filter_years.join(''))
-    document.getElementById('filter-label-years').innerText = `Годы (${filter_years.length})`
-
-    const sorted_sources = Object.keys(sources).sort(function (a, b) {
-      if (sources[a] > sources[b]) {
-        return -1
-      }
-      if (sources[a] < sources[b]) {
-        return 1
-      }
-
-      return 0
-    })
-
-    const filter_sources = sorted_sources.map(source =>
-      build_filter_item({
-        where: source,
-        text: `${fancy_names[source]} (${sources[source]})`
-      })
-    )
-    document.getElementById('filters_where').insertAdjacentHTML('afterbegin', filter_sources.join(''))
-    document.getElementById('filter-label-sources').innerText = `Издания (${filter_sources.length})`
-
-    const sorted_tags = Object.keys(tags).sort(function (a, b) {
-      if (tags[a] > tags[b]) {
-        return -1
-      }
-      if (tags[a] < tags[b]) {
-        return 1
-      }
-      return 0
-    })
-
-    let modifier_search_idx = 0
-    let found_modifiers = 0
-    let mod_sorted_tags = []
-
-    while (modifier_search_idx >= 0) {
-      modifier_search_idx = sorted_tags.findIndex((tag) => {
-        return modifier_tags.includes(tag)
-      })
-
-      if (modifier_search_idx >= 0) {
-        found_modifiers++
-
-        mod_sorted_tags.push(sorted_tags[modifier_search_idx])
-        sorted_tags.splice(modifier_search_idx, 1)
-      }
-    }
-
-    mod_sorted_tags = mod_sorted_tags.concat(sorted_tags)
-
-    const filter_tags = mod_sorted_tags.map(tag =>
-      build_filter_item({
-        tag,
-        text: `${tag} (${tags[tag]})`
-      })
-    )
-
-    filter_tags.splice(found_modifiers, 0, '<div class="dropdown-divider"></div>') // there are two main tag categories to be separated
-    document.getElementById('filters_tag').insertAdjacentHTML('afterbegin', filter_tags.join(''))
-    document.getElementById('filter-label-tags').innerText = `Тэги (${filter_tags.length - 1})`
+    render_years_filter_menus(years)
+    render_sources_filter_menus(sources)
+    render_tags_filter_menus(tags)
 
     const filter_labels = Array.from(document.getElementsByClassName('filter-label'))
     filter_labels.forEach(filter_label => {
@@ -875,15 +905,15 @@ function init (data) {
       const year_filters = parse_filters_from_query(YEAR_FILTER_PARAM_NAME)
       const tag_filters = parse_filters_from_query(TAG_FILTER_PARAM_NAME)
 
-      const filtered_rset = filter(where_filters, year_filters, tag_filters)
+      const filter_result = filter(where_filters, year_filters, tag_filters)
 
-      if (filtered_rset.length === full_recordset.length) {
+      if (filter_result.records.length === full_recordset.length) {
         document.getElementById('filter_name').innerText = `Все записи (${full_recordset.length})`
       } else {
-        document.getElementById('filter_name').innerText = `Выбранные материалы (${filtered_rset.length})`
+        document.getElementById('filter_name').innerText = `Выбранные материалы (${filter_result.records.length})`
       }
 
-      draw(filtered_rset)
+      draw(filter_result.records)
     }
 
     function draw_nourl () {
@@ -1112,20 +1142,70 @@ function init (data) {
    * Также тег может быть выбран в блокирующем (инверсном) режиме (в url помечается воскл.знаком)
    * материалы с этим тегом будут удалены из выборки независимо от всех остальных тегов
    *
+   * Возвращает объект, состоящий из
+   *  records - отфильтрованные записи;
+   *  filtered_years - счетчик встреченных записей по годам;
+   *  filtered_sources - счетчик встреченных записей по изданиям;
+   *  filtered_tags - счетчик встреченных записей по тегам;
+   *  ! В СЧЕТЧИКАХ ЗНАЧЕНИЯ МОГУТ БЫТЬ ОТРИЦАТЕЛЬНЫМИ !
+   *
    * @param {Array} where_filters
    * @param {Array} year_filters
    * @param {Array} tag_filters
-   * @returns {Array}
+   * @returns {Object}
    */
   function filter (where_filters, year_filters, tag_filters) {
     if (where_filters.length + year_filters.length + tag_filters.length === 0) {
-      return full_recordset
+      return {records: full_recordset, filtered_years: years, filtered_sources: sources, filtered_tags: tags}
     }
 
-    return full_recordset.filter(record =>
-      filter_by_where(record, where_filters) &&
-      filter_by_year(record, year_filters) &&
-      filter_by_tag(record, tag_filters))
+    const filtered_years = years
+    const filtered_sources = sources
+    const filtered_tags = tags
+
+    let result = {}
+    result.records = full_recordset.filter(record => {
+      const is_passed_filter = filter_by_where(record, where_filters) &&
+        filter_by_year(record, year_filters) &&
+        filter_by_tag(record, tag_filters)
+
+
+      // we need to mark tags that have not apeared in filtered set (no place 0)
+      // without additional cycling whole list. That's why when we have positive number
+      // here - it means we met it first time and we should 0 it. And count to negative side
+      // so we know where we count filtered values and where we have default ones
+
+      // determine one time if we need to add to counter current record
+      let modifier = 0
+      if (is_passed_filter) {
+        modifier = 1
+      }
+
+      if (filtered_years[record.date.year]>0) {
+        filtered_years[record.date.year] = 0
+      }
+      filtered_years[record.date.year] -= modifier
+
+      if (filtered_sources[record.where]>0) {
+        filtered_sources[record.where] = 0
+      }
+      filtered_sources[record.where] -= modifier
+
+      record.tags && record.tags.forEach(function (tag) {
+        if (filtered_tags[tag]>0) {
+          filtered_tags[tag] = 0
+        }
+        filtered_tags[tag] -= modifier
+      })
+
+      return is_passed_filter
+    })
+
+    result.filtered_years = filtered_years
+    result.filtered_sources = filtered_sources
+    result.filtered_tags = filtered_tags
+
+    return result
   }
 
   function route_scroll_to_rc () {

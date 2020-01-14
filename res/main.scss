@@ -158,24 +158,8 @@ $pagination-disabled-border-color: transparent !default;
 
 .scrollable-menu {
   height: auto;
-  max-height: 900px;
+  max-height: 70vh;
   overflow-y: auto;
-}
-
-@media (max-height: 720px) {
-  .scrollable-menu {
-    max-height: 540px;
-  }
-}
-@media (max-height: 640px) {
-  .scrollable-menu {
-    max-height: 320px;
-  }
-}
-@media (max-height: 400px) {
-  .scrollable-menu {
-    max-height: 180px;
-  }
 }
 
 .filter-btn {

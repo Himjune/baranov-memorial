@@ -164,17 +164,17 @@ $pagination-disabled-border-color: transparent !default;
 
 @media (max-height: 720px) {
   .scrollable-menu {
-    max-height: 520px;
+    max-height: 540px;
   }
 }
-@media (max-height: 600px) {
+@media (max-height: 640px) {
   .scrollable-menu {
-    max-height: 400px;
+    max-height: 360px;
   }
 }
 @media (max-height: 400px) {
   .scrollable-menu {
-    max-height: 250px;
+    max-height: 200px;
   }
 }
 

@@ -189,6 +189,14 @@ $pagination-disabled-border-color: transparent !default;
 
 .selected-tags {
   font-size: 1rem;
-  font-weight: 360;
+  font-weight: 410;
+  line-height: 1.5;
+}
+
+.filter-icon {
+  position: relative;
+  top: 0.14rem;
+  font-size: 1rem;
+  font-weight: 410;
   line-height: 1.5;
 }

@@ -158,28 +158,8 @@ $pagination-disabled-border-color: transparent !default;
 
 .scrollable-menu {
   height: auto;
-  max-height: 900px;
-  overflow-x: hidden;
-}
-
-@media (max-height: 720px) {
-  .scrollable-menu {
-    max-height: 600px;
-  }
-}
-@media (max-height: 600px) {
-  .scrollable-menu {
-    max-height: 400px;
-  }
-}
-
-.dropdown-item:hover {
-  background-color: $pagination-hover-bg;
-}
-
-.filter-text {
-  position: relative;
-  top: 0.15rem;
+  max-height: 65vh;
+  overflow-y: auto;
 }
 
 .filter-btn {
@@ -205,8 +185,4 @@ $pagination-disabled-border-color: transparent !default;
 
 .filter-btn-activated {
   color: #fff;
-}
-
-.dropdown-menu {
-    width: 300px;
 }

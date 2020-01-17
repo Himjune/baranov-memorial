@@ -120,7 +120,13 @@ function init (data) {
   const card_image = '<img src="{img}" class="card-img-top" alt="Превью материала" onerror="this.onerror=null;this.src=\'logo/placeholder.jpg\';">'
   const card_url = '<a href="{url}" target="_blank" class="btn btn-primary btn-sm">Перейти к материалу</a>'
   const card_tag = '<a class="badge badge-primary badge-tag" onclick="filter_by_tag(\'{tag}\',\'{type}\')">{tag_text}</a>'
-  const filter_menu_tag = '<a class="badge badge-primary px-lg-2 py-lg-1 m-lg-1 px-2 py-2 m-1 badge-tag selected-tags" onclick="remove_selected_filter(\'{tag}\',\'{type}\')">{tag_text} <span class="iconify filter-icon ml-1" data-icon="fa-solid:times" data-inline="false"></span></a>'
+  const filter_menu_tag =
+    `<a class="badge badge-primary px-3 py-lg-1 py-2 m-1 badge-tag selected-tags"
+        onclick="remove_selected_filter(\'{tag}\',\'{type}\')"
+      >
+        {tag_text}
+        <span class="iconify filter-icon ml-1" data-icon="fa-solid:times" data-inline="false"></span>
+      </a>`
 
   const filter_menu_divider = '<span class="d-inline-block mx-2 invisible"></span>'
 
@@ -698,12 +704,9 @@ function init (data) {
       document.getElementById('navbar-main-link').href = '/' + parent.location.hash
 
       insertion_html += '<a class="badge badge-danger px-lg-2 py-lg-1 m-lg-1 px-2 py-2 m-1 badge-tag selected-tags" onclick="remove_all_filters()">Сбросить все <span class="iconify filter-icon ml-1" data-icon="fa-solid:times" data-inline="false"></span></a>'
-
-      document.getElementById('pre-divider-for-selected-filters').style.visibility = 'visible'
       elem.insertAdjacentHTML('afterbegin', insertion_html)
     } else {
       document.getElementById('navbar-main-link').href = '/'
-      document.getElementById('pre-divider-for-selected-filters').style.visibility = 'hidden'
     }
 
     render_btns_by_selected_filters()

@@ -668,24 +668,23 @@ function init (data) {
       has_prev_part = true
     }
 
-    if (has_prev_part) {
-      insertion_html += filter_menu_divider
-      has_prev_part = false
-    }
     badges_part = render_selected_part(YEAR_FILTER_PARAM_NAME)
     if (badges_part.length > 0) {
+      if (has_prev_part) {
+        insertion_html += filter_menu_divider
+      }
+
       insertion_html += badges_part
 
       has_prev_part = true
     }
 
-    if (has_prev_part) {
-      insertion_html += filter_menu_divider
-      has_prev_part = false
-    }
-
     badges_part = render_selected_part(TAG_FILTER_PARAM_NAME)
     if (badges_part.length > 0) {
+      if (has_prev_part) {
+        insertion_html += filter_menu_divider
+      }
+
       insertion_html += badges_part
 
       has_prev_part = true

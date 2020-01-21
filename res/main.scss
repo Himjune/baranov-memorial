@@ -97,44 +97,44 @@ body, nav {
   width: 95%;
 }
 
-$pagination-color: #ffffff !default;
-$pagination-bg: #375a7f !default;
-$pagination-border-width: 0 !default;
-$pagination-border-color: transparent !default;
+$interaction-element-color: #ffffff !default;
+$interaction-element-bg: #375a7f !default;
+$interaction-element-border-width: 0 !default;
+$interaction-element-border-color: transparent !default;
 
-$pagination-hover-color: #ffffff !default;
-$pagination-hover-bg: lighten($pagination-bg, 10%) !default;
-$pagination-hover-border-color: transparent !default;
+$interaction-element-hover-color: #ffffff !default;
+$interaction-element-hover-bg: lighten($interaction-element-bg, 10%) !default;
+$interaction-element-hover-border-color: transparent !default;
 
-$pagination-active-bg: $pagination-hover-bg !default;
-$pagination-active-border-color: transparent !default;
+$interaction-element-active-bg: $interaction-element-hover-bg !default;
+$interaction-element-active-border-color: transparent !default;
 
-$pagination-disabled-color: #ffffff !default;
-$pagination-disabled-bg: darken($pagination-bg, 15%) !default;
-$pagination-disabled-border-color: transparent !default;
+$interaction-element-disabled-color: #ffffff !default;
+$interaction-element-disabled-bg: darken($interaction-element-bg, 15%) !default;
+$interaction-element-disabled-border-color: transparent !default;
 
 .page-link {
-  color: $pagination-color;
-  background-color: $pagination-bg;
-  border: $pagination-border-width solid $pagination-border-color;
+  color: $interaction-element-color;
+  background-color: $interaction-element-bg;
+  border: $interaction-element-border-width solid $interaction-element-border-color;
 
   &:hover {
-    color: $pagination-hover-color;
-    background-color: $pagination-hover-bg;
-    border-color: $pagination-hover-border-color;
+    color: $interaction-element-hover-color;
+    background-color: $interaction-element-hover-bg;
+    border-color: $interaction-element-hover-border-color;
   }
 }
 
 .page-item {
   &.active .page-link {
-    background-color: $pagination-active-bg;
-    border-color: $pagination-active-border-color;
+    background-color: $interaction-element-active-bg;
+    border-color: $interaction-element-active-border-color;
   }
 
   &.disabled .page-link {
-    color: $pagination-disabled-color;
-    background-color: $pagination-disabled-bg;
-    border-color: $pagination-disabled-border-color;
+    color: $interaction-element-disabled-color;
+    background-color: $interaction-element-disabled-bg;
+    border-color: $interaction-element-disabled-border-color;
   }
 }
 
@@ -164,7 +164,7 @@ $pagination-disabled-border-color: transparent !default;
 
 .filter-link {
   &:hover {
-    background-color: $pagination-hover-bg;
+    background-color: $interaction-element-hover-bg;
   }
 }
 

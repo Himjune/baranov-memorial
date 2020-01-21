@@ -162,6 +162,12 @@ $pagination-disabled-border-color: transparent !default;
   overflow-y: auto;
 }
 
+.filter-link {
+  &:hover {
+    background-color: $pagination-hover-bg;
+  }
+}
+
 .filter-btn {
   padding: 0.45rem;
 

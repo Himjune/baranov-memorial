@@ -853,7 +853,6 @@ function init (data) {
       draw_nourl()
       util_update_query_param("nourls","")
     } else if (after_load_tags.length === 0) {
-      document.getElementById('pre-divider-for-selected-filters').style.visibility = 'hidden'
       draw(full_recordset)
     } else {
       render_selected_filters()
